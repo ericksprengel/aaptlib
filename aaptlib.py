@@ -183,7 +183,7 @@ class ApkInfo():
     if self.__dump_resources is not None:
       return self.__dump_resources
 
-    aapt_stream = os.popen("{0} dump resources '{1}'".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = os.popen("{0} dump resources \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
     self.__dump_resources=[]
 
     try:
