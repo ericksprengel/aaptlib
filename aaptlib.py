@@ -463,3 +463,17 @@ class ApkInfo():
               resource_value['string_value'] = self.getDumpStrings()[idx]
               resource_values.append(resource_value)
     return resource_values
+
+  def get_resource_values_by_name_and_type(self, resource_name, resource_type):
+    # type: (str, str) -> Dict[str, str]
+    types = self.getDumpResources()
+    result = dict()
+    for type in types:
+      if type['type'] == resource_type:
+        for res in type['resources']:
+          if res['desc']['name'] == resource_name:
+            for value in res['values']:
+              config = value['config']  # type: Dict[str, str]
+              resconfig = value['resconfig']
+              result[config['name'].strip(':')] = self.getResourceConfigValue(resconfig)
+    return result
