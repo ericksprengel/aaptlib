@@ -142,7 +142,7 @@ class ApkInfo():
     if self.__dump_badging is not None:
       return self.__dump_badging
 
-    aapt_stream = os.popen("{0} dump badging '{1}'".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = os.popen("{0} dump badging \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
     self.__dump_badging=[]
     for idx, line in enumerate(aapt_stream):
       res = self.__parseAaptLine(line, idx)
@@ -239,7 +239,7 @@ class ApkInfo():
     if self.__dump_strings is not None:
       return self.__dump_strings
 
-    aapt_stream = os.popen("{0} dump strings '{1}'".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = os.popen("{0} dump strings \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
     self.__dump_strings=[]
 
     string = None
@@ -330,7 +330,7 @@ class ApkInfo():
 
   # function to extract strings from an APK file
   def getDumpXmlTree(self, xmlpath):
-    aapt_stream = os.popen("{0} dump xmltree '{1}' '{2}'".format(Configs.AAPT_BIN, self.__apk_path, xmlpath))
+    aapt_stream = os.popen("{0} dump xmltree \"{1}\" \"{2}\"".format(Configs.AAPT_BIN, self.__apk_path, xmlpath))
 
     try:
 
@@ -390,7 +390,7 @@ class ApkInfo():
     if self.__list is not None:
       return self.__list
 
-    aapt_stream = os.popen("{0} list '{1}'".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = os.popen("{0} list \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
     self.__list=[]
 
     try:
@@ -442,7 +442,7 @@ class ApkInfo():
     else:
       # type in [ 'style', 'array', 'attr' ]
       # for these types aapt return <bag> string.
-      raise ValueError("It's impossible to get values for '{0}' type. Aapt doesn't support it.".format(type))
+      raise ValueError("It's impossible to get values for \"{0}\" type. Aapt doesn't support it.".format(type))
 
   def get_resource_values_by_regex(self, regex_str):
     resource_values = []
