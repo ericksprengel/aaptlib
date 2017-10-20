@@ -6,6 +6,11 @@ import xml.etree.ElementTree as ET
 class Configs:
   AAPT_BIN = "aapt"
 
+  @classmethod
+  def set_aapt_bin(cls, path):
+    if   os.path.exists(path):
+      cls.AAPT_BIN = path
+
 # THIS SCRIPT USES BASH COLORS:
 class bcolors:
   HEADER = '\033[95m'
