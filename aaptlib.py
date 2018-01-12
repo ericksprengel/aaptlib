@@ -40,9 +40,9 @@ class AaptDecodeError(ValueError):
         self.colno = colno
 
     def pretty_print(self):
-      print "{0:4}:{1}".format(self.lineno, self.line.rstrip())
+      print("{0:4}:{1}").format(self.lineno, self.line.rstrip())
       if self.colno is not None:
-        print bcolors.FAIL + "____" + "_"*self.colno + "^" + bcolors.ENDC
+        print(bcolors.FAIL + "____" + "_"*self.colno + "^" + bcolors.ENDC)
       print("\n\t{0}{1}{2}".format(bcolors.FAIL, self.msg, bcolors.ENDC))
 
 
