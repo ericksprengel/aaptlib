@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os, sys
 import re
+from subprocess import Popen, PIPE
 import xml.etree.ElementTree as ET
 
 class Configs:
@@ -147,14 +148,20 @@ class ApkInfo():
     if self.__dump_badging is not None:
       return self.__dump_badging
 
-    aapt_stream = os.popen("\"{0}\" dump badging \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = self.__getAaptOutputStream(['dump', 'badging', self.__apk_path])
     self.__dump_badging=[]
     for idx, line in enumerate(aapt_stream):
       res = self.__parseAaptLine(line, idx)
       self.__dump_badging.append(res)
     return self.__dump_badging
 
-
+  def __getAaptOutputStream(self, args):
+    p = Popen([Configs.AAPT_BIN] + args, stdout=PIPE, stderr=PIPE, shell=False)
+    try:
+      output = ''
+      output, stderr = p.communicate()
+    finally:
+      return (l + '\n' for l in output.splitlines())
 
   def __parseAaptResourceDesc(self, desc):
     # desc example: 'com.google.mail:integer/max_mails:'
@@ -188,7 +195,7 @@ class ApkInfo():
     if self.__dump_resources is not None:
       return self.__dump_resources
 
-    aapt_stream = os.popen("\"{0}\" dump resources \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = self.__getAaptOutputStream(['dump', 'resources', self.__apk_path])
     self.__dump_resources=[]
 
     try:
@@ -244,7 +251,7 @@ class ApkInfo():
     if self.__dump_strings is not None:
       return self.__dump_strings
 
-    aapt_stream = os.popen("\"{0}\" dump strings \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = self.__getAaptOutputStream(['dump', 'strings', self.__apk_path])
     self.__dump_strings=[]
 
     string = None
@@ -335,7 +342,7 @@ class ApkInfo():
 
   # function to extract strings from an APK file
   def getDumpXmlTree(self, xmlpath):
-    aapt_stream = os.popen("\"{0}\" dump xmltree \"{1}\" \"{2}\"".format(Configs.AAPT_BIN, self.__apk_path, xmlpath))
+    aapt_stream = self.__getAaptOutputStream(['dump', 'xmltree', self.__apk_path, xmlpath])
 
     try:
 
@@ -395,7 +402,7 @@ class ApkInfo():
     if self.__list is not None:
       return self.__list
 
-    aapt_stream = os.popen("\"{0}\" list \"{1}\"".format(Configs.AAPT_BIN, self.__apk_path))
+    aapt_stream = self.__getAaptOutputStream(['list', self.__apk_path])
     self.__list=[]
 
     try:
